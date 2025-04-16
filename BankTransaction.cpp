@@ -58,8 +58,8 @@ void BankTransaction::WithdrawMoney() {
 }
 
 void BankTransaction::DisplayAmount() {
-    cout << endl << "Your Name: " << name << endl;
-    cout << endl << "Your Address: " << address << endl;
+    cout <<endl<< "Your Name: " << name << endl;
+    cout <<"Your Address: " << address << endl;
     cout << endl << "Type of Account: " << type << endl;
     cout << "Account ID: " << accountID << endl;
     cout << "Current/Total Balance: " << balance << endl;
