@@ -20,7 +20,7 @@ bool BankTransaction::verifyPassword() {
 void BankTransaction::OpenAccount() {
     cout << endl << "Enter Account ID (unique number): ";
     cin >> accountID;
-    cin.ignore(); // Clear input buffer
+    cin.ignore();
     cout << endl << "Enter Your Full Name:" << endl;
     cin.getline(name, 100);
     cout << endl << "Enter Your Address:" << endl;
