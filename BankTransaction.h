@@ -2,16 +2,18 @@
 #define BANKTRANSACTION_H
 
 #include <string>
+#include <stack>
 
 class BankTransaction
 {
 
 private:
 
-    int accountID;
+    long long int accountID;
     char name[100], address[100], type[10];
     float balance;
     std::string password;
+    std::stack<std::string> transactionHistory; // new
 
 public:
 
@@ -22,13 +24,13 @@ public:
     void DepositMoney();
     void WithdrawMoney();
     void DisplayAmount();
+    void ShowTransactionHistory(); // new
     int getAccountID();
     bool verifyPassword();
     static int SearchAccount(int id);
     static void AdminView();
     void SaveToFile();
     void LoadFromFile();
-
 
 };
 
