@@ -1,6 +1,10 @@
 #include "banktransaction.h"
 #include <iostream>
 #include <string>
+#include <fstream>
+#include<sstream>
+#include <cstring>
+
 using namespace std;
 
 int BankTransaction::accountCount = 0;
@@ -20,7 +24,8 @@ bool BankTransaction::verifyPassword()
 }
 
 
-void BankTransaction::OpenAccount() {
+void BankTransaction::OpenAccount()
+{
     cout << endl << "Enter Account ID (unique number): ";
     cin >> accountID;
     cin.ignore();
@@ -37,6 +42,7 @@ void BankTransaction::OpenAccount() {
     cout << endl << "Your Account is Created Successfully." << endl;
 
     accountCount++;
+    SaveToFile();
 
 
     for (int i = 0; i < accountCount - 1; i++)
@@ -91,14 +97,14 @@ void BankTransaction::DisplayAmount()
 
 int BankTransaction::SearchAccount(int id)
 {
-        for (int i = 0; i < accountCount; i++)
+    for (int i = 0; i < accountCount; i++)
+    {
+        if (accounts[i].accountID == id)
         {
-            if (accounts[i].accountID == id)
-            {
-                return i;
-            }
+            return i;
         }
-        return -1;
+    }
+    return -1;
 }
 
 
@@ -126,5 +132,62 @@ void BankTransaction::AdminView()
     }
 }
 
+void BankTransaction::SaveToFile()
+{
+    ofstream outFile("accounts.txt", ios::app); // 'app' means append mode
 
+    if (outFile.is_open())
+    {
+        outFile << accountID << "," << name << "," << address << "," << type
+                << "," << balance << "," << password << "\n";
+        outFile.close();
+    }
+    else
+    {
+        cout << "Unable to open file for writing.\n";
+    }
+}
 
+void BankTransaction::LoadFromFile()
+{
+    std::ifstream file("accounts.txt");
+
+    if (!file)
+    {
+        std::cout << "No previous account data found.\n";
+        return;
+    }
+
+    std::string line;
+
+    while (getline(file, line))
+    {
+        if (line.empty()) continue; // Skip empty lines
+
+        std::stringstream ss(line);
+        std::string id, nameStr, addressStr, typeStr, balanceStr, passwordStr;
+
+        // Read values separated by commas
+        getline(ss, id, ',');
+        getline(ss, nameStr, ',');
+        getline(ss, addressStr, ',');
+        getline(ss, typeStr, ',');
+        getline(ss, balanceStr, ',');
+        getline(ss, passwordStr);
+
+        // Store into BankTransaction object
+        BankTransaction account;
+        account.accountID = std::stoi(id);
+        strcpy(account.name, nameStr.c_str());
+        strcpy(account.address, addressStr.c_str());
+        strcpy(account.type, typeStr.c_str());
+        account.balance = std::stof(balanceStr);
+        account.password = passwordStr;
+
+        // Add to accounts array
+        accounts[accountCount++] = account;
+    }
+
+    file.close();
+    std::cout << accountCount << " account(s) loaded from file.\n";
+}
