@@ -8,10 +8,10 @@ int main()
     int num, searchID, index;
     char option;
 
-    cout<<"\n<<------------------------------------------------->>"<<endl;
-    cout<<"<<-------------------COOL Bank--------------------->>"<<endl;
-    cout<<"<<------------------Welcome User!------------------>>"<<endl;
-    cout<<"<<------------------------------------------------->>"<<endl;
+    cout<<"\n||-------------------------------------------------||"<<endl;
+    cout<<"||--------------------ABC Bank---------------------||"<<endl;
+    cout<<"||------------------Welcome User!------------------||"<<endl;
+    cout<<"||-------------------------------------------------||"<<endl;
     cout<<"\n1) Open Account."<<endl;
     cout<<"2) Deposit Money."<<endl;
     cout<<"3) Withdraw Money."<<endl;
@@ -78,15 +78,15 @@ int main()
             break;
 
         case 5:
-            cout << "\n6) Admin Panel:"<<endl;
+            cout << "\n5) Admin Panel:"<<endl;
             BankTransaction::AdminView();
             break;
 
 
         case 6:
-            if (num == 5)
+            if (num == 6)
             {
-                cout<<"<<---------------------Exited---------------------->>"<<endl;
+                cout<<"||---------------------Exited----------------------||"<<endl;
                 exit(0);
             }
 
@@ -101,6 +101,7 @@ int main()
 
         if ((option == 'n') || (option == 'N'))
         {
+            cout<<"||---------------------Exited----------------------||"<<endl;
             exit(0);
         }
 
