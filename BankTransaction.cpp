@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include<sstream>
+#include <sstream>
 #include <cstring>
 
 using namespace std;
@@ -18,15 +18,14 @@ int BankTransaction::getAccountID()
 bool BankTransaction::verifyPassword()
 {
     string inputPass;
-    cout<<"Enter your password: ";
-    cin>>inputPass;
+    cout << "Enter your password: ";
+    cin >> inputPass;
     return inputPass == password;
 }
 
-
 void BankTransaction::OpenAccount()
 {
-    cout << endl << "Enter Account ID (unique number): ";
+    cout << endl << "Enter Account ID (within 12 digits): ";
     cin >> accountID;
     cin.ignore();
     cout << endl << "Enter Your Full Name:" << endl;
@@ -44,7 +43,6 @@ void BankTransaction::OpenAccount()
     accountCount++;
     SaveToFile();
 
-
     for (int i = 0; i < accountCount - 1; i++)
     {
         for (int j = 0; j < accountCount - i - 1; j++)
@@ -57,42 +55,61 @@ void BankTransaction::OpenAccount()
             }
         }
     }
-
 }
-
 
 void BankTransaction::DepositMoney()
 {
     int deposit;
-    cout<<endl<<"Enter the Amount You Want to Deposit:"<<endl;
-    cin>>deposit;
-    balance = balance + deposit;
-    cout<<"\nYour Current Balance is: "<<balance<<endl;
+    cout << endl << "Enter the Amount You Want to Deposit:" << endl;
+    cin >> deposit;
+    balance += deposit;
+    cout << "\nYour Current Balance is: " << balance << endl;
+
+    transactionHistory.push("Deposited " + to_string(deposit));
 }
 
 void BankTransaction::WithdrawMoney()
 {
     int withdraw;
-    cout<<endl<<"Enter the Amount You Want to Withdraw:"<<endl;
-    cin>>withdraw;
+    cout << endl << "Enter the Amount You Want to Withdraw:" << endl;
+    cin >> withdraw;
     if (withdraw <= balance)
     {
-        balance = balance - withdraw;
-        cout<<"\nYour Remaining Balance is: "<<balance<<endl;
+        balance -= withdraw;
+        cout << "\nYour Remaining Balance is: " << balance << endl;
+        transactionHistory.push("Withdrew " + to_string(withdraw));
     }
     else
     {
-        cout<<"\nInsufficient balance!"<<endl;
+        cout << "\nInsufficient balance!" << endl;
     }
 }
 
 void BankTransaction::DisplayAmount()
 {
-    cout<<endl<<"Your Name: "<<name<<endl;
-    cout<<"Your Address: " <<address<<endl;
-    cout<<endl <<"Type of Account: "<<type<<endl;
-    cout<<"Account ID: "<<accountID<<endl;
-    cout<<"Current/Total Balance: "<<balance<<endl;
+    cout << endl << "Your Name: " << name << endl;
+    cout << "Your Address: " << address << endl;
+    cout << endl << "Type of Account: " << type << endl;
+    cout << "Account ID: " << accountID << endl;
+    cout << "Current/Total Balance: " << balance << endl;
+}
+
+void BankTransaction::ShowTransactionHistory()
+{
+    if (transactionHistory.empty())
+    {
+        cout << "No transactions yet." << endl;
+        return;
+    }
+
+    cout << "\nRecent Transactions:\n";
+    std::stack<std::string> tempStack = transactionHistory;
+
+    while (!tempStack.empty())
+    {
+        cout << tempStack.top() << endl;
+        tempStack.pop();
+    }
 }
 
 int BankTransaction::SearchAccount(int id)
@@ -106,7 +123,6 @@ int BankTransaction::SearchAccount(int id)
     }
     return -1;
 }
-
 
 void BankTransaction::AdminView()
 {
@@ -122,9 +138,8 @@ void BankTransaction::AdminView()
         for (int i = 0; i < accountCount; i++)
         {
             cout << "Account " << i + 1 << ": " << accounts[i].name
-                 << " (ID: " << accounts[i].accountID << ")\n";
+                << " (ID: " << accounts[i].accountID << ")\n";
         }
-
     }
     else
     {
@@ -134,7 +149,7 @@ void BankTransaction::AdminView()
 
 void BankTransaction::SaveToFile()
 {
-    ofstream outFile("accounts.txt", ios::app); // 'app' means append mode
+    ofstream outFile("accounts.txt", ios::app);
 
     if (outFile.is_open())
     {
@@ -162,12 +177,11 @@ void BankTransaction::LoadFromFile()
 
     while (getline(file, line))
     {
-        if (line.empty()) continue; // Skip empty lines
+        if (line.empty()) continue;
 
         std::stringstream ss(line);
         std::string id, nameStr, addressStr, typeStr, balanceStr, passwordStr;
 
-        // Read values separated by commas
         getline(ss, id, ',');
         getline(ss, nameStr, ',');
         getline(ss, addressStr, ',');
@@ -175,7 +189,6 @@ void BankTransaction::LoadFromFile()
         getline(ss, balanceStr, ',');
         getline(ss, passwordStr);
 
-        // Store into BankTransaction object
         BankTransaction account;
         account.accountID = std::stoi(id);
         strcpy(account.name, nameStr.c_str());
@@ -184,7 +197,6 @@ void BankTransaction::LoadFromFile()
         account.balance = std::stof(balanceStr);
         account.password = passwordStr;
 
-        // Add to accounts array
         accounts[accountCount++] = account;
     }
 
