@@ -26,6 +26,8 @@ public:
     bool verifyPassword();
     static int SearchAccount(int id);
     static void AdminView();
+    void SaveToFile();
+    void LoadFromFile();
 
 
 };
