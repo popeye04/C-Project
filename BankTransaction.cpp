@@ -6,16 +6,19 @@ using namespace std;
 int BankTransaction::accountCount = 0;
 BankTransaction BankTransaction::accounts[100];
 
-int BankTransaction::getAccountID() {
+int BankTransaction::getAccountID()
+{
     return accountID;
 }
 
-bool BankTransaction::verifyPassword() {
+bool BankTransaction::verifyPassword()
+{
     string inputPass;
-    cout << "Enter your password: ";
-    cin >> inputPass;
+    cout<<"Enter your password: ";
+    cin>>inputPass;
     return inputPass == password;
 }
+
 
 void BankTransaction::OpenAccount() {
     cout << endl << "Enter Account ID (unique number): ";
@@ -35,41 +38,93 @@ void BankTransaction::OpenAccount() {
 
     accountCount++;
 
-}
 
-void BankTransaction::DepositMoney() {
-    int deposit;
-    cout << endl << "Enter the Amount You Want to Deposit:" << endl;
-    cin >> deposit;
-    balance = balance + deposit;
-    cout << "\nYour Current Balance is: " << balance << endl;
-}
-
-void BankTransaction::WithdrawMoney() {
-    int withdraw;
-    cout << endl << "Enter the Amount You Want to Withdraw:" << endl;
-    cin >> withdraw;
-    if (withdraw <= balance) {
-        balance = balance - withdraw;
-        cout << "\nYour Remaining Balance is: " << balance << endl;
-    } else {
-        cout << "\nInsufficient balance!" << endl;
-    }
-}
-
-void BankTransaction::DisplayAmount() {
-    cout <<endl<< "Your Name: " << name << endl;
-    cout <<"Your Address: " << address << endl;
-    cout << endl << "Type of Account: " << type << endl;
-    cout << "Account ID: " << accountID << endl;
-    cout << "Current/Total Balance: " << balance << endl;
-}
-
-int BankTransaction::SearchAccount(int id) {
-    for (int i = 0; i < accountCount; i++) {
-        if (accounts[i].accountID == id) {
-            return i;
+    for (int i = 0; i < accountCount - 1; i++)
+    {
+        for (int j = 0; j < accountCount - i - 1; j++)
+        {
+            if (accounts[j].accountID > accounts[j + 1].accountID)
+            {
+                BankTransaction temp = accounts[j];
+                accounts[j] = accounts[j + 1];
+                accounts[j + 1] = temp;
+            }
         }
     }
-    return -1;
+
 }
+
+
+void BankTransaction::DepositMoney()
+{
+    int deposit;
+    cout<<endl<<"Enter the Amount You Want to Deposit:"<<endl;
+    cin>>deposit;
+    balance = balance + deposit;
+    cout<<"\nYour Current Balance is: "<<balance<<endl;
+}
+
+void BankTransaction::WithdrawMoney()
+{
+    int withdraw;
+    cout<<endl<<"Enter the Amount You Want to Withdraw:"<<endl;
+    cin>>withdraw;
+    if (withdraw <= balance)
+    {
+        balance = balance - withdraw;
+        cout<<"\nYour Remaining Balance is: "<<balance<<endl;
+    }
+    else
+    {
+        cout<<"\nInsufficient balance!"<<endl;
+    }
+}
+
+void BankTransaction::DisplayAmount()
+{
+    cout<<endl<<"Your Name: "<<name<<endl;
+    cout<<"Your Address: " <<address<<endl;
+    cout<<endl <<"Type of Account: "<<type<<endl;
+    cout<<"Account ID: "<<accountID<<endl;
+    cout<<"Current/Total Balance: "<<balance<<endl;
+}
+
+int BankTransaction::SearchAccount(int id)
+{
+        for (int i = 0; i < accountCount; i++)
+        {
+            if (accounts[i].accountID == id)
+            {
+                return i;
+            }
+        }
+        return -1;
+}
+
+
+void BankTransaction::AdminView()
+{
+    int adminPassword;
+    cout << "Enter Admin Password: ";
+    cin >> adminPassword;
+
+    if (adminPassword == 420)
+    {
+        cout << "\nWelcome Admin!\n";
+        cout << "\nList of All Accounts (Sorted by Account ID):\n";
+
+        for (int i = 0; i < accountCount; i++)
+        {
+            cout << "Account " << i + 1 << ": " << accounts[i].name
+                 << " (ID: " << accounts[i].accountID << ")\n";
+        }
+
+    }
+    else
+    {
+        cout << "Incorrect Admin Password!\n";
+    }
+}
+
+
+
