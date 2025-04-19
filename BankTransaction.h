@@ -13,8 +13,7 @@ private:
     char name[100], address[100], type[10];
     float balance;
     std::string password;
-    std::stack<std::string> transactionHistory; // new
-
+    std::stack<std::string> transactionHistory; 
 public:
 
     static int accountCount;
@@ -24,7 +23,7 @@ public:
     void DepositMoney();
     void WithdrawMoney();
     void DisplayAmount();
-    void ShowTransactionHistory(); // new
+    void ShowTransactionHistory(); 
     int getAccountID();
     bool verifyPassword();
     static int SearchAccount(int id);
