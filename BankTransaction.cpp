@@ -1,9 +1,9 @@
 #include "banktransaction.h"
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <cstring>
+
+
+
 
 using namespace std;
 
@@ -52,7 +52,7 @@ void BankTransaction::OpenAccount()
     cout<< endl << "Your Account is Created Successfully." <<endl;
 
     accountCount++;
-    SaveToFile();
+
 
     for (int i = 0; i < accountCount - 1; i++)
     {
@@ -158,59 +158,3 @@ void BankTransaction::AdminView()
     }
 }
 
-void BankTransaction::SaveToFile()
-{
-    ofstream outFile("accounts.txt", ios::app);
-
-    if (outFile.is_open())
-    {
-        outFile << accountID << "," << name << "," << address << "," << type
-                << "," << balance << "," << password << "\n";
-        outFile.close();
-    }
-    else
-    {
-        cout<< "Unable to open file for writing.\n";
-    }
-}
-
-void BankTransaction::LoadFromFile()
-{
-    std::ifstream file("accounts.txt");
-
-    if (!file)
-    {
-        std::cout << "No previous account data found.\n";
-        return;
-    }
-
-    std::string line;
-
-    while (getline(file, line))
-    {
-        if (line.empty()) continue;
-
-        std::stringstream ss(line);
-        std::string id, nameStr, addressStr, typeStr, balanceStr, passwordStr;
-
-        getline(ss, id, ',');
-        getline(ss, nameStr, ',');
-        getline(ss, addressStr, ',');
-        getline(ss, typeStr, ',');
-        getline(ss, balanceStr, ',');
-        getline(ss, passwordStr);
-
-        BankTransaction account;
-        account.accountID = std::stoi(id);
-        strcpy(account.name, nameStr.c_str());
-        strcpy(account.address, addressStr.c_str());
-        strcpy(account.type, typeStr.c_str());
-        account.balance = std::stof(balanceStr);
-        account.password = passwordStr;
-
-        accounts[accountCount++] = account;
-    }
-
-    file.close();
-    std::cout<< accountCount << " account(s) loaded from file.\n";
-}
